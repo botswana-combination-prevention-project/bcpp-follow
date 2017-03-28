@@ -1,0 +1,21 @@
+{% load tz %}
+{% load edc_base_extras %}
+{% load staticfiles %}
+{% load crispy_forms_tags %}
+
+    <td style="white-space: nowrap">
+
+	      <a role="button" title="back to enumeration" class="btn btn-sm btn-default"
+	        href="{% url enumeration_listboard_url_name household_identifier=result.household_identifier survey_schedule=result.survey_schedule %}">
+	            <i class="fa fa-sitemap fa-fw"></i>
+	      </a>
+           {% with members=result.members %}
+             {% include 'enumeration/members_button.html' %}
+           {% endwith %}
+
+	    <a title="dashboard" role="button" class="btn btn-default btn-sm"
+		    href="{{ result.reverse }}">
+		    <i class="fa fa-user-circle-o fa-lg"></i>
+            &nbsp;Dashboard
+	    </a>&nbsp;&nbsp;&nbsp;
+    </td>
