@@ -1,5 +1,6 @@
 import re
 
+from django.apps import apps as django_apps
 from django.contrib.auth.decorators import login_required
 from django.db.models import Q
 from django.utils.decorators import method_decorator
@@ -12,6 +13,7 @@ from bcpp_subject.models import SubjectLocator
 
 from .wrappers import SubjectLocatorModelWrapper
 from edc_map.site_mappers import site_mappers
+from edc_device.constants import CLIENT, SERVER
 
 
 class ListboardView(AppConfigViewMixin, EdcBaseViewMixin, ListboardView):
@@ -33,8 +35,13 @@ class ListboardView(AppConfigViewMixin, EdcBaseViewMixin, ListboardView):
         if kwargs.get('survey_schedule'):
             options.update(
                 {'survey_schedule': kwargs.get('survey_schedule')})
-        options.update({
-            'subject_identifier__startswith': '066-{}'.format(site_mappers.current_map_code)})
+        edc_protocol_app_config = django_apps.get_app_config('edc_protocol')
+        edc_device_app_config = django_apps.get_app_config('edc_device')
+        if edc_device_app_config.device_role in [SERVER, CLIENT]:
+            options.update({
+                'subject_identifier__startswith': '{}-{}'.format(
+                    edc_protocol_app_config.protocol_number,
+                    site_mappers.current_map_code)})
         return options
 
     def extra_search_options(self, search_term):
