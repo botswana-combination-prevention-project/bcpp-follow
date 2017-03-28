@@ -1,0 +1,26 @@
+{% load tz %}
+{% load edc_base_extras %}
+{% load staticfiles %}
+{% load crispy_forms_tags %}
+
+
+<!--  begin columns  -->
+
+	<td>
+    {% if result.gender == MALE %}
+        <i class="fa fa-male fa-lg"></i>
+    {% else %}
+        <i class="fa fa-female fa-lg"></i>
+    {% endif %}
+    {{ result.subject_identifier }}
+    {{ result.subject_consent.first_name }} {{ result.subject_consent.initials }}
+        </BR>{{ result.subject_consent.last_name }}
+	</td>
+	<td>{% age_in_years result.subject_consent.dob %}yrs</td>
+    <td>{{ result.may_follow_up }}</td>  
+    <td>{{ result.contacts }}</td>  
+	<td>{{ result.survey_schedule_object.name }}.{{ result.survey.name|upper }}</td>
+	<td>{{ result.community_name|title }}</td>
+	<td>{{ result.subject_consent.modified|date:"Y-m-d H:i" }}</td>
+	<td>{{ result.subject_consent.hostname_created }}</td>
+<!--  end columns  -->
