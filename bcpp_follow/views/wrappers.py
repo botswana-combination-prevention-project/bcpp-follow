@@ -1,8 +1,7 @@
 from django.apps import apps as django_apps
 
-from edc_dashboard.wrappers.model_wrapper import ModelWrapper
-
 from bcpp_subject.models.subject_consent import SubjectConsent
+from edc_model_wrapper.wrappers.model_wrapper import ModelWrapper
 
 
 class SubjectLocatorModelWrapper(ModelWrapper):
