@@ -21,12 +21,12 @@ class SubjectLocatorModelWrapper(ModelWrapper):
     @property
     def subject_consent(self):
         return SubjectConsent.objects.filter(
-            subject_identifier=self._original_object.subject_identifier).order_by(
+            subject_identifier=self.object.subject_identifier).order_by(
                 'consent_datetime').last()
 
     @property
     def may_follow_up(self):
-        return self._original_object.may_follow_up
+        return self.object.may_follow_up
 
     @property
     def first_name(self):
@@ -39,10 +39,10 @@ class SubjectLocatorModelWrapper(ModelWrapper):
     @property
     def contacts(self):
         return ', '.join([
-            self._original_object.subject_cell or '',
-            self._original_object.subject_cell_alt or '',
-            self._original_object.subject_phone or '',
-            self._original_object.subject_phone_alt or ''])
+            self.object.subject_cell or '',
+            self.object.subject_cell_alt or '',
+            self.object.subject_phone or '',
+            self.object.subject_phone_alt or ''])
 
     @property
     def household_identifier(self):
