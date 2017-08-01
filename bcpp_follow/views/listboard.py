@@ -19,7 +19,7 @@ from edc_device.constants import CLIENT, SERVER
 class ListboardView(AppConfigViewMixin, EdcBaseViewMixin, ListboardView):
 
     model = 'bcpp_subject.subjectlocator'
-    model_wrapper_class = SubjectLocatorModelWrapper
+    model_wrapper_cls = SubjectLocatorModelWrapper
     navbar_item_selected = 'bcpp_follow'
     app_config_name = 'bcpp_follow'
 
