@@ -8,18 +8,17 @@ from django.utils.decorators import method_decorator
 from edc_base.view_mixins import EdcBaseViewMixin
 from edc_dashboard.view_mixins import AppConfigViewMixin
 from edc_dashboard.views import ListboardView
-
-from bcpp_subject.models import SubjectLocator
-
-from .wrappers import SubjectLocatorModelWrapper
 from edc_map.site_mappers import site_mappers
 from edc_device.constants import CLIENT, SERVER
 
+from ..views.mixins import MapAreaQuerysetViewMixin
+from .wrappers import WorkListModelWrapper
 
-class ListboardView(AppConfigViewMixin, EdcBaseViewMixin, ListboardView):
 
-    model = 'bcpp_subject.subjectlocator'
-    model_wrapper_cls = SubjectLocatorModelWrapper
+class ListboardView(AppConfigViewMixin, EdcBaseViewMixin, MapAreaQuerysetViewMixin, ListboardView):
+
+    model = 'bcpp_follow.worklist'
+    model_wrapper_cls = WorkListModelWrapper
     navbar_item_selected = 'bcpp_follow'
     app_config_name = 'bcpp_follow'
 
@@ -32,9 +31,6 @@ class ListboardView(AppConfigViewMixin, EdcBaseViewMixin, ListboardView):
         if kwargs.get('subject_identifier'):
             options.update(
                 {'subject_identifier': kwargs.get('subject_identifier')})
-        if kwargs.get('survey_schedule'):
-            options.update(
-                {'survey_schedule': kwargs.get('survey_schedule')})
         edc_protocol_app_config = django_apps.get_app_config('edc_protocol')
         edc_device_app_config = django_apps.get_app_config('edc_device')
         if edc_device_app_config.device_role in [SERVER, CLIENT]:

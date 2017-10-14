@@ -12,7 +12,12 @@
             <div class="panel panel-{% if navbar_name == 'anonymous' %}danger{% else %}info{% endif %}">
                 <div class="panel-heading">
 
-                    <i class="fa fa-user-circle-o fa-2x"></i></i>
+                    <button class="btn btn-sm btn-default" type="submit" id="action" name="action" form="" value="called">
+				        <span class="glyphicon glyphicon-phone-alt"></span> Called
+				    </button>
+				    <button class="btn btn-sm btn-default" type="submit" id="action" name="action" form="" value="visited">
+				        <span class="glyphicon glyphicon-home"></span> Visited
+				    </button>
                         <span class="pull-right">{% include 'edc_dashboard/search_form.html' %}</span>
 
                 </div>
