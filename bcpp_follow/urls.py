@@ -4,7 +4,7 @@ from django.contrib import admin
 from bcpp_subject.patterns import subject_identifier
 
 from .admin_site import bcpp_follow_admin
-from .views import ListboardView
+from .views import ListboardView, CalledVisitedView
 
 app_name = 'bcpp_follow'
 
@@ -12,6 +12,8 @@ admin.autodiscover()
 
 urlpatterns = [
     url(r'^admin/', bcpp_follow_admin.urls),
+    url(r'^worklist/called_visited/$',
+        CalledVisitedView.as_view(), name='called_visited_url'),
 ]
 
 

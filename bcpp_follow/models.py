@@ -7,7 +7,8 @@ from edc_search.model_mixins import SearchSlugModelMixin
 
 class WorkList(SearchSlugModelMixin, BaseUuidModel):
 
-    """A model linked to the subject consent to record corrections."""
+    """A model linked to the subject consent to record corrections.
+    """
 
     subject_identifier = models.CharField(
         verbose_name="Subject Identifier",
@@ -32,6 +33,10 @@ class WorkList(SearchSlugModelMixin, BaseUuidModel):
 
     def __str__(self):
         return str(self.subject_identifier,)
+
+    def get_search_slug_fields(self):
+        fields = ['subject_identifier']
+        return fields
 
     class Meta:
         app_label = 'bcpp_follow'

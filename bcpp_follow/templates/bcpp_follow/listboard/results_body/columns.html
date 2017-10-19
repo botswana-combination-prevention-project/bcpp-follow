@@ -13,23 +13,24 @@
         <i class="fa fa-female fa-lg"></i>
     {% endif %}
     {{ result.subject_identifier }}
-    {{ result.first_name }} {{ result.initials }}
-        </BR>{{ result.last_name }}
+    {{ result.first_name }} {{ result.initials }} {{ result.last_name }}
 	</td>
-	<td>{{ result.age_in_years }}yrs</td>
+	<td>{{ result.age_in_years }}yrs </td>
     <td>{{ result.may_follow_up }}</td>
-    <td>{{ result.called_datetime|date:"Y-m-d H:i" }}</td>
+    <td>{% if result.call_datetime %} {{ result.call_datetime }} {% endif %}</td>
     <td>
-      {% if result.is_called %}
-        <span class="text text-success"><i class="fa fa-check-circle fa-lg" title="Called"></i></span>
-      {% else %}
-        <span class="text text-danger"><i class="fa fa-times-circle fa-lg" title="Not called"></i></span>
-      {% endif %}
-      {% if result.visited %}
-        <span class="text text-success"><i class="fa fa-check-circle fa-lg" title="Visited"></i></span>
-      {% else %}
-        <span class="text text-danger"><i class="fa fa-times-circle fa-lg" title="Not visited"></i></span>
-      {% endif %}
+	    {% if result.is_called %}
+	      <span class="text text-success"><i class="fa fa-check-circle fa-lg" title="Called"></i></span>
+	    {% else %}
+	      <span class="text text-danger"><i class="fa fa-times-circle fa-lg" title="Not called"></i></span>
+	    {% endif %}
+    </td>
+    <td>
+	    {% if result.visited %}
+	      <span class="text text-success"><i class="fa fa-check-circle fa-lg" title="Visited"></i></span>
+	    {% else %}
+	      <span class="text text-danger"><i class="fa fa-times-circle fa-lg" title="Not visited"></i></span>
+	    {% endif %}
     </td>  
     <td>{{ result.contacts }}</td>  
 	<td>{{ result.map_area|title }}</td>

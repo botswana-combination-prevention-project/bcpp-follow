@@ -21,6 +21,10 @@ class WorkListModelWrapper(ModelWrapper):
             return None
 
     @property
+    def call_datetime(self):
+        return self.object.called_datetime
+
+    @property
     def subject_consent(self):
         return django_apps.get_model(
             'bcpp_subject.subjectconsent').objects.filter(

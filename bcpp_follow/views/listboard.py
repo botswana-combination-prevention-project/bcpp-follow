@@ -1,5 +1,6 @@
 import re
 
+from django.urls.base import reverse
 from django.apps import apps as django_apps
 from django.contrib.auth.decorators import login_required
 from django.db.models import Q
@@ -21,6 +22,10 @@ class ListboardView(AppConfigViewMixin, EdcBaseViewMixin, MapAreaQuerysetViewMix
     model_wrapper_cls = WorkListModelWrapper
     navbar_item_selected = 'bcpp_follow'
     app_config_name = 'bcpp_follow'
+    form_action_url_name = 'bcpp_follow:called_visited_url'
+    form_action_name = 'form_action'
+    action_name = 'called'
+    form_action_selected_items_name = 'selected_items'
 
     @method_decorator(login_required)
     def dispatch(self, *args, **kwargs):
@@ -40,8 +45,33 @@ class ListboardView(AppConfigViewMixin, EdcBaseViewMixin, MapAreaQuerysetViewMix
                     site_mappers.current_map_code)})
         return options
 
+    @property
+    def form_action_url_kwargs(self):
+        return self.url_kwargs
+
+    @property
+    def url_kwargs(self):
+        return {}
+
+    @property
+    def form_action_url(self):
+        return reverse(
+            self.form_action_url_name or self.listboard_url_name,
+            kwargs=self.form_action_url_kwargs)
+
     def extra_search_options(self, search_term):
         q = Q()
         if re.match('^[A-Z]+$', search_term):
             q = Q(first_name__exact=search_term)
         return q
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context.update(
+            action_name=self.action_name,
+            form_action_name=self.form_action_name,
+            form_action_selected_items_name=self.form_action_selected_items_name,
+            form_action_url=self.form_action_url,
+            total_results=self.get_queryset().count()
+        )
+        return context
