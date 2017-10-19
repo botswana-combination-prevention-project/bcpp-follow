@@ -54,12 +54,11 @@
 						   <!-- begin panel_action_buttons -->
 						   {% block panel_action_buttons %}
 							   <button class="btn btn-sm btn-default" type="submit" id="action" name="action" form="{{ form_action_name }}" value="called">
-							        <span class="glyphicon glyphicon-phone-alt"></span> Called
+							        <span class="glyphicon glyphicon-phone-alt"></span> Update Called <span class="badge">{{called_subject}}</span> / <span class="badge">{{total_results}}</span>
 							    </button>
 							    <button class="btn btn-sm btn-default" type="submit" id="action" name="action" form="{{ form_action_name }}" value="visited">
-							        <span class="glyphicon glyphicon-home"></span> Visited
+							        <span class="glyphicon glyphicon-home"></span> Update Visited <span class="badge">{{visited_subjects}}</span> / <span class="badge">{{total_results}}</span>
 							    </button>
-							    total subject: {{total_results}}
 						   {% endblock panel_action_buttons %}
 					       <!-- end panel_action_buttons -->
 						</div>

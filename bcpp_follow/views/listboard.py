@@ -72,6 +72,10 @@ class ListboardView(AppConfigViewMixin, EdcBaseViewMixin, MapAreaQuerysetViewMix
             form_action_name=self.form_action_name,
             form_action_selected_items_name=self.form_action_selected_items_name,
             form_action_url=self.form_action_url,
-            total_results=self.get_queryset().count()
+            total_results=self.get_queryset().count(),
+            called_subject=len(
+                [obj for obj in self.get_queryset() if obj.is_called]),
+            visited_subjects=len(
+                [obj for obj in self.get_queryset() if obj.visited]),
         )
         return context
