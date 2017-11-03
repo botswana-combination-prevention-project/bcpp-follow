@@ -1,16 +1,23 @@
 from django.conf.urls import url
-
-from survey.patterns import survey_schedule, survey
+from django.contrib import admin
 
 from bcpp_subject.patterns import subject_identifier
 
-from .views import ListboardView
+from .admin_site import bcpp_follow_admin
+from .views import ListboardView, CalledVisitedView
 
 app_name = 'bcpp_follow'
 
+admin.autodiscover()
+
+urlpatterns = [
+    url(r'^admin/', bcpp_follow_admin.urls),
+    url(r'^worklist/called_visited/$',
+        CalledVisitedView.as_view(), name='called_visited_url'),
+]
+
 
 def listboard_urls():
-    urlpatterns = []
     listboard_configs = [
         ('listboard_url', ListboardView, 'listboard')]
 
@@ -18,22 +25,11 @@ def listboard_urls():
         urlpatterns.extend([
             url(r'^' + label + '/'
                 '(?P<subject_identifier>' + subject_identifier + ')/'
-                '(?P<survey_schedule>' + survey_schedule + ')/'
-                '(?P<survey>' + survey + ')/'
                 '(?P<page>\d+)/',
                 listboard_view_class.as_view(), name=listboard_url_name),
             url(r'^' + label + '/'
                 '(?P<subject_identifier>' + subject_identifier + ')/'
-                '(?P<survey>' + survey + ')/'
                 '(?P<page>\d+)/',
-                listboard_view_class.as_view(), name=listboard_url_name),
-            url(r'^' + label + '/'
-                '(?P<subject_identifier>' + subject_identifier + ')/'
-                '(?P<survey_schedule>' + survey_schedule + ')/',
-                listboard_view_class.as_view(), name=listboard_url_name),
-            url(r'^' + label + '/'
-                '(?P<subject_identifier>' + subject_identifier + ')/'
-                '(?P<survey>' + survey + ')/',
                 listboard_view_class.as_view(), name=listboard_url_name),
             url(r'^' + label + '/'
                 '(?P<subject_identifier>' + subject_identifier + ')/',
