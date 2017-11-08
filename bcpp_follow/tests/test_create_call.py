@@ -18,7 +18,7 @@ from survey.site_surveys import site_surveys
 from survey.tests.survey_test_helper import SurveyTestHelper
 
 from .worklist_test_helper import WorkListTestHelper
-from edc_call_manager.models import Call, Log
+from edc_call_manager.models import Call, Log, LogEntry
 # from ..models import Call
 
 
@@ -135,3 +135,4 @@ class TestSubjectConsent(SubjectMixin, TestCase):
         self.worklist_test_helper.make_worklist(**options)
         self.assertEqual(Call.objects.all().count(), 1)
         self.assertEqual(Log.objects.all().count(), 1)
+        self.assertEqual(LogEntry.objects.all().count(), 0)
