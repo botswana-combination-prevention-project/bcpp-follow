@@ -1,7 +1,6 @@
 from django.conf.urls import url
 from django.contrib import admin
 
-from bcpp_subject.patterns import subject_identifier
 
 from .admin_site import bcpp_follow_admin
 from .views import ListboardView, CalledVisitedView
@@ -9,6 +8,8 @@ from .views import ListboardView, CalledVisitedView
 app_name = 'bcpp_follow'
 
 admin.autodiscover()
+
+subject_identifier = '066\-[0-9\-]+'
 
 urlpatterns = [
     url(r'^admin/', bcpp_follow_admin.urls),

@@ -11,6 +11,13 @@ https://docs.djangoproject.com/en/1.10/ref/settings/
 """
 
 import os
+import sys
+from pathlib import PurePath
+import configparser
+
+from django.core.management.color import color_style
+
+style = color_style()
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -25,8 +32,22 @@ SECRET_KEY = 'rg_bhpa2503_4^t@901nfvfg490ir(@gn@l$&p1!&(*=-7y3k0'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
+CONFIG_FILE = 'bcpp_follow.conf'
+
 ALLOWED_HOSTS = []
 
+if DEBUG:
+    ETC_DIR = '/etc'
+else:
+    ETC_DIR = '/etc'
+
+
+CONFIG_PATH = os.path.join(ETC_DIR, APP_NAME, CONFIG_FILE)
+sys.stdout.write(style.SUCCESS(f'Config folder {ETC_DIR}\n'))
+sys.stdout.write(style.SUCCESS(f'  * Reading config from {CONFIG_FILE}\n'))
+
+config = configparser.RawConfigParser()
+config.read(os.path.join(CONFIG_PATH))
 
 # Application definition
 
@@ -39,8 +60,36 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'django_crypto_fields.apps.AppConfig',
     'django_revision.apps.AppConfig',
-    'edc_protocol.apps.AppConfig',
+    'rest_framework.authtoken',
+    'edc_base.apps.AppConfig',
+    'edc_consent.apps.AppConfig',
+    'edc_lab.apps.AppConfig',
+    'edc_sync.apps.AppConfig',
+    'edc_base_test.apps.AppConfig',
+    'edc_registration.apps.AppConfig',
+    'edc_visit_schedule.apps.AppConfig',
     'edc_identifier.apps.AppConfig',
+    'edc_call_manager.apps.AppConfig',
+    'household.apps.AppConfig',
+    'member.apps.AppConfig',
+    'member_clone.apps.AppConfig',
+    'plot.apps.AppConfig',
+    'enumeration.apps.AppConfig',
+    'bcpp_community.apps.AppConfig',
+    'bcpp_referral.apps.AppConfig',
+    'bcpp_metadata_rules.apps.AppConfig',
+    'bcpp_visit_schedule.apps.AppConfig',
+    'bcpp_subject_dashboard.apps.AppConfig',
+    'bcpp_status.apps.AppConfig',
+    'bcpp_follow.apps.EdcAppointmentAppConfig',
+    'bcpp_follow.apps.EdcVisitTrackingAppConfig',
+    'bcpp_follow.apps.EdcDeviceAppConfig',
+    'bcpp_follow.apps.EdcMapAppConfig',
+    'bcpp_follow.apps.EdcProtocolAppConfig',
+    'bcpp_consent.apps.AppConfig',
+    'bcpp_subject.apps.AppConfig',
+    'bcpp_follow.apps.SurveyAppConfig',
+    'bcpp_follow.apps.EdcTimepointAppConfig',
     'bcpp_follow.apps.AppConfig',
 ]
 
@@ -125,3 +174,26 @@ USE_TZ = True
 STATIC_URL = '/static/'
 KEY_PATH = os.path.join(BASE_DIR, 'crypto_fields')
 GIT_DIR = BASE_DIR
+STATIC_ROOT = os.path.join(BASE_DIR, APP_NAME, 'static')
+MEDIA_ROOT = str(PurePath(BASE_DIR).parent)
+MEDIA_URL = '/media/'
+CURRENT_MAP_AREA = 'test_community'
+SURVEY_GROUP_NAME = 'bcpp-survey'
+SURVEY_SCHEDULE_NAME = 'bcpp-year-3'
+ANONYMOUS_SURVEY = 'ano'
+ANONYMOUS_CONSENT_GROUP = 'anonymous'
+ANONYMOUS_ENABLED = True
+
+if 'test' in sys.argv:
+
+    class DisableMigrations:
+
+        def __contains__(self, item):
+            return True
+
+        def __getitem__(self, item):
+            return None
+
+    MIGRATION_MODULES = DisableMigrations()
+    PASSWORD_HASHERS = ('django.contrib.auth.hashers.MD5PasswordHasher',)
+    DEFAULT_FILE_STORAGE = 'inmemorystorage.InMemoryStorage'
