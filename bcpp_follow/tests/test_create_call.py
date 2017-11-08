@@ -18,7 +18,8 @@ from survey.site_surveys import site_surveys
 from survey.tests.survey_test_helper import SurveyTestHelper
 
 from .worklist_test_helper import WorkListTestHelper
-from ..models import Call
+from edc_call_manager.models import Call, Log
+# from ..models import Call
 
 
 fake = Faker()
@@ -133,3 +134,4 @@ class TestSubjectConsent(SubjectMixin, TestCase):
             map_area='test_community')
         self.worklist_test_helper.make_worklist(**options)
         self.assertEqual(Call.objects.all().count(), 1)
+        self.assertEqual(Log.objects.all().count(), 1)
