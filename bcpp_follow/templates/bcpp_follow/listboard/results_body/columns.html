@@ -5,7 +5,6 @@
 
 
 <!--  begin columns  -->
-
 	<td>
     {% if result.gender == MALE %}
         <i class="fa fa-male fa-lg"></i>
@@ -13,10 +12,14 @@
         <i class="fa fa-female fa-lg"></i>
     {% endif %}
     {{ result.subject_identifier }}
-    {{ result.first_name }} {{ result.initials }} {{ result.last_name }}
+    {{ result.first_name }}
+    {{ result.last_name }}
+    {{ result.age_in_years }}yrs 
 	</td>
-	<td>{{ result.age_in_years }}yrs </td>
     <td>{{ result.may_follow_up }}</td>
+    <td>
+    	 {% include 'bcpp_follow/listboard/results_body/add_call_log_entry.html' %}
+    </td>
     <td>{% if result.call_datetime %} {{ result.call_datetime }} {% endif %}</td>
     <td>
 	    {% if result.is_called %}

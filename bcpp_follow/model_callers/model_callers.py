@@ -1,4 +1,4 @@
-from edc_call_manager.model_caller import ModelCaller, MONTHLY
+from edc_call_manager.model_caller import ModelCaller, DAILY
 from edc_call_manager.decorators import register
 from bcpp_subject.models import SubjectConsent, SubjectLocator
 from edc_call_manager.models import Call, Log, LogEntry
@@ -12,4 +12,4 @@ class WorkListFollowUpModelCaller(ModelCaller):
     consent_model = (SubjectConsent, 'subject_identifier')
     log_entry_model = LogEntry
     log_model = Log
-    interval = MONTHLY
+    interval = DAILY

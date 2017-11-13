@@ -3,7 +3,7 @@ from django.contrib import admin
 
 
 from .admin_site import bcpp_follow_admin
-from .views import ListboardView, CalledVisitedView
+from .views import ListboardView
 
 app_name = 'bcpp_follow'
 
@@ -13,8 +13,6 @@ subject_identifier = '066\-[0-9\-]+'
 
 urlpatterns = [
     url(r'^admin/', bcpp_follow_admin.urls),
-    url(r'^worklist/called_visited/$',
-        CalledVisitedView.as_view(), name='called_visited_url'),
 ]
 
 

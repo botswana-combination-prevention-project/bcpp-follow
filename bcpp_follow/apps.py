@@ -10,6 +10,9 @@ class AppConfig(DjangoAppConfig):
     listboard_url_name = 'bcpp_follow:listboard_url'
     listboard_template_name = 'bcpp_follow/listboard.html'
 
+    def ready(self):
+        from bcpp_follow.models import signals
+
 
 if settings.APP_NAME == 'bcpp_follow':
 
