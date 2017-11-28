@@ -1,10 +1,9 @@
+from bcpp_follow.models.worklist import WorkList
+from bcpp_subject.models.subject_visit import SubjectVisit
+from django.core.exceptions import ValidationError
 from django.db.models.signals import post_save
 from django.dispatch import receiver
-
 from edc_call_manager.models import LogEntry
-from bcpp_follow.models.worklist import WorkList
-from django.core.exceptions import ValidationError
-from bcpp_subject.models.subject_visit import SubjectVisit
 
 
 @receiver(post_save, weak=False, sender=LogEntry,
@@ -30,7 +29,7 @@ def subject_visit_on_post_save(sender, instance, using, raw, **kwargs):
             work_list = WorkList.objects.get(
                 subject_identifier=instance.subject_identifier)
         except WorkList.DoesNotExist:
-            raise ValidationError("Work list is expected to exist.")
+            pass
         else:
             work_list.visited = True
             work_list.save()
