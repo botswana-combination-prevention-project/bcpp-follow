@@ -1,8 +1,19 @@
 from django.db import models
 
+from edc_base.model_managers import HistoricalRecords
 from edc_base.model_mixins import BaseUuidModel
 from edc_base.model_validators.date import datetime_not_future
-from edc_search.model_mixins import SearchSlugModelMixin
+from edc_search.model_mixins import SearchSlugModelMixin, SearchSlugManager
+
+
+class BaseWorkManager(models.Manager):
+
+    def get_by_natural_key(self, subject_identifier):
+        return self.get(subject_identifier=subject_identifier)
+
+
+class WorklistManager(BaseWorkManager, SearchSlugManager):
+    pass
 
 
 class WorkList(SearchSlugModelMixin, BaseUuidModel):
@@ -31,8 +42,15 @@ class WorkList(SearchSlugModelMixin, BaseUuidModel):
 
     visited = models.BooleanField(default=False)
 
+    objects = WorklistManager()
+
+    history = HistoricalRecords()
+
     def __str__(self):
         return str(self.subject_identifier,)
+
+    def natural_key(self):
+        return (self.subject_identifier, )
 
     def get_search_slug_fields(self):
         fields = ['subject_identifier']

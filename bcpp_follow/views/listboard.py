@@ -1,10 +1,10 @@
 import re
 
-from django.urls.base import reverse
 from django.apps import apps as django_apps
 from django.contrib.auth.decorators import login_required
 from django.db.models import Q
 from django.utils.decorators import method_decorator
+from django.views.decorators.cache import never_cache
 
 from edc_base.view_mixins import EdcBaseViewMixin
 from edc_dashboard.view_mixins import AppConfigViewMixin
@@ -16,16 +16,16 @@ from ..views.mixins import MapAreaQuerysetViewMixin
 from .wrappers import WorkListModelWrapper
 
 
+@method_decorator(never_cache, name='dispatch')
+@method_decorator(login_required, name='dispatch')
 class ListboardView(AppConfigViewMixin, EdcBaseViewMixin, MapAreaQuerysetViewMixin, ListboardView):
 
     model = 'bcpp_follow.worklist'
     model_wrapper_cls = WorkListModelWrapper
     navbar_item_selected = 'bcpp_follow'
     app_config_name = 'bcpp_follow'
-    form_action_url_name = 'bcpp_follow:called_visited_url'
-    form_action_name = 'form_action'
-    action_name = 'called'
-    form_action_selected_items_name = 'selected_items'
+    listboard_url_name = django_apps.get_app_config(
+        'bcpp_follow').listboard_url_name
 
     @method_decorator(login_required)
     def dispatch(self, *args, **kwargs):
@@ -45,20 +45,6 @@ class ListboardView(AppConfigViewMixin, EdcBaseViewMixin, MapAreaQuerysetViewMix
                     site_mappers.current_map_code)})
         return options
 
-    @property
-    def form_action_url_kwargs(self):
-        return self.url_kwargs
-
-    @property
-    def url_kwargs(self):
-        return {}
-
-    @property
-    def form_action_url(self):
-        return reverse(
-            self.form_action_url_name or self.listboard_url_name,
-            kwargs=self.form_action_url_kwargs)
-
     def extra_search_options(self, search_term):
         q = Q()
         if re.match('^[A-Z]+$', search_term):
@@ -68,10 +54,6 @@ class ListboardView(AppConfigViewMixin, EdcBaseViewMixin, MapAreaQuerysetViewMix
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context.update(
-            action_name=self.action_name,
-            form_action_name=self.form_action_name,
-            form_action_selected_items_name=self.form_action_selected_items_name,
-            form_action_url=self.form_action_url,
             total_results=self.get_queryset().count(),
             called_subject=len(
                 [obj for obj in self.get_queryset() if obj.is_called]),
