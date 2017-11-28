@@ -15,7 +15,7 @@ def cal_log_entry_on_post_save(sender, instance, using, raw, **kwargs):
             work_list = WorkList.objects.get(
                 subject_identifier=instance.log.call.subject_identifier)
         except WorkList.DoesNotExist:
-            raise ValidationError("Work list is expected to exist.")
+            pass
         else:
             work_list.is_called = True
             work_list.called_datetime = instance.call_datetime
