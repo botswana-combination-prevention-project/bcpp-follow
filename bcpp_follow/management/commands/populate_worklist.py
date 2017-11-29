@@ -44,7 +44,7 @@ class Command(BaseCommand):
                     household_member__household_structure__household__plot__plot_identifier__in=inner_container.identifier_labels)
         count = 0
         total_participants = len(
-            [visit.subject_identifier for visit in subject_visits])
+            list(set([visit.subject_identifier for visit in subject_visits])))
         for subject_visit in subject_visits:
             try:
                 WorkList.objects.get(
