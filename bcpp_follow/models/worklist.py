@@ -1,6 +1,5 @@
 from django.db import models
 
-from edc_base.model_managers import HistoricalRecords
 from edc_base.model_mixins import BaseUuidModel
 from edc_base.model_validators.date import datetime_not_future
 from edc_search.model_mixins import SearchSlugModelMixin, SearchSlugManager
@@ -43,8 +42,6 @@ class WorkList(SearchSlugModelMixin, BaseUuidModel):
     visited = models.BooleanField(default=False)
 
     objects = WorklistManager()
-
-    history = HistoricalRecords()
 
     def __str__(self):
         return str(self.subject_identifier,)
